@@ -16,6 +16,7 @@ pipeline {
       NEXUSIP = '172.31.1.86'
       NEXUSPORT = '8081'
       NEXUS_LOGIN = 'nexuslogin'
+      SONARSERVER = 'sonarserver'
       SONARSCANNER = 'sonarscanner'
   }
 
@@ -53,7 +54,7 @@ pipeline {
       }
 
       steps {
-        withSonarQubeEnv("${SONARSCANNER}") {
+        withSonarQubeEnv("${SONARSERVER}") {
             sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
                 -Dsonar.projectName=vprofile-repo \
                 -Dsonar.projectVersion=1.0 \
