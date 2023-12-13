@@ -1,3 +1,8 @@
+def COLOR_MAP = [
+  'SUCCESS': 'good',
+  'FAILURE': 'danger',
+]
+
 pipeline {
   agent any
 
@@ -49,7 +54,7 @@ pipeline {
 
     stage('Sonar Analysis') {
 
-		  environment {
+      environment {
         scannerHome = tool "${SONARSCANNER}"
       }
 
@@ -96,4 +101,14 @@ pipeline {
     }
 
   }
+
+  post {
+    always {
+      echo 'Slack Notification'
+      slackSend channel: '#',
+        color: COLOR_MAP[currentBuild.currentResult],
+        message: "${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More Info at: ${env.BUILD_URL}"
+    }
+  }
+
 }
